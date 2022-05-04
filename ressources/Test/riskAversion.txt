@@ -1,0 +1,25 @@
+===Limits===
+t = 1
+===Facts===
+nuages
+danger
+late
+midi
+===Actions===
+demiTour
+contourner
+===PermanentRules===
+===Rules===
+===Strong===
+demiTour(t) ::> (nuages(t+1) ::> (not danger(t)))
+demiTour(t) ::> (midi(t) ::> late(t))
+===Weak===
+contourner(t) ::> (nuages(t+1) ::> (not danger(t)))
+===Desires===
+not late(t)
+not danger(t)
+===InitialWorldBeliefs===
+===Observations===
+0:nuages(1),midi(0)
+===Runtime===
+0:demiTour(0)

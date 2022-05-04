@@ -1,0 +1,22 @@
+===Limits===
+t = 1
+===Facts===
+nuages
+danger
+eclair
+===Actions===
+continuer
+===PermanentRules===
+===Rules===
+===Strong===
+continuer(t) ::> (not danger(t))
+(nuages(t) and eclair(t)) ::> danger(t)
+===Weak===
+nuages(t) ::> (not danger(t))
+===Desires===
+not danger(t)
+===InitialWorldBeliefs===
+===Observations===
+0:nuages(0),eclair(0)
+===Runtime===
+0:continuer(0)

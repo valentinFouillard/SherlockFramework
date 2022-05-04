@@ -1,0 +1,21 @@
+===Limits===
+t = 2
+===Facts===
+checkIn
+late 
+===Actions===
+takeOff
+===PermanentRules===
+===Rules===
+===Strong===
+takeOff(t) ::> checkIn(t)
+takeOff(t) ::> (late(t) ::> (not late(t+1)))
+===Weak===
+===Desires===
+not late(t)
+===InitialWorldBeliefs===
+not checkIn(0)
+===Observations===
+1:late(1)
+===Runtime===
+1:takeOff(1)

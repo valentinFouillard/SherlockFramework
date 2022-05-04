@@ -1,0 +1,19 @@
+===Limits===
+t = 1
+===Facts===
+nuages
+goodMeteo
+danger
+===Actions===
+===PermanentRules===
+===Rules===
+===Strong===
+nuages(t) ::> (not goodMeteo(t))
+(not goodMeteo(t)) ::> danger(t)
+===Weak===
+===Desires===
+not danger(t)
+===InitialWorldBeliefs===
+===Observations===
+0:nuages(0),goodMeteo(0)
+===Runtime===

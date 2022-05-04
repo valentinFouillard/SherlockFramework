@@ -1,0 +1,22 @@
+===Limits===
+t = 1
+===Facts===
+alarme 
+reserve 
+panne 
+===Actions===
+atterrir 
+===PermanentRules===
+===Rules===
+===Strong===
+(alarme(t) and (not reserve(t))) ::> panne(t)
+reserve(t) ::> (not panne(t))
+atterrir(t) ::> panne(t)
+===Weak===
+===Desires===
+not panne(t)
+===InitialWorldBeliefs===
+===Observations===
+0:alarme(0),reserve(0)
+===Runtime===
+0:atterrir(0)

@@ -1,0 +1,22 @@
+===Limits===
+t = 1
+===Facts===
+alarme 
+reserve
+outFuel
+===Actions===
+land
+===PermanentRules===
+===Rules===
+===Strong===
+alarme(t) and (not reserve(t))::> outFuel(t)
+reserve(t) ::> (not outFuel(t))
+land(t) ::> outFuel(t)
+===Weak===
+===Desires===
+not outFuel(t)
+===InitialWorldBeliefs===
+===Observations===
+0:alarme(0),reserve(0)
+===Runtime===
+0:land(0)

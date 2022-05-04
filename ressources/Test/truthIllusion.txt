@@ -1,0 +1,21 @@
+===Limits===
+t = 3
+===Facts===
+alarme 
+danger 
+voyantVert
+===Actions===
+===PermanentRules===
+===Rules===
+===Strong===
+alarme(t) ::> danger(t)
+voyantVert(t) ::> (not danger(t))
+===Weak===
+===Desires===
+===InitialWorldBeliefs===
+===Observations===
+0:alarme(0)
+1:alarme(1)
+2:alarme(2),voyantVert(2)
+===Runtime===
+

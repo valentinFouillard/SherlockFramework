@@ -1,0 +1,21 @@
+===Limits===
+t = 3
+===Facts===
+pluie 
+orage 
+===Actions===
+eteindre :: nat t
+===PermanentRules===
+===Rules===
+===Strong===
+eteindre(t) ::> orage(t)
+===Weak===
+===Desires===
+===InitialWorldBeliefs===
+===Observations===
+0:pluie(0),orage(0)
+1:not pluie(1), not orage(1)
+2:pluie(2)
+===Runtime===
+0:eteindre(0)
+2:eteindre(2)

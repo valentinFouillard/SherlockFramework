@@ -1,0 +1,22 @@
+===Limits===
+t = 1
+===Facts===
+alarme 
+acceleration 
+stall 
+===Actions===
+pull :: nat t
+===PermanentRules===
+===Rules===
+===Strong===
+alarme(t) ::> stall(t)
+acceleration(t) ::> (not stall(t))
+pull(t) ::> stall(t)
+===Weak===
+===Desires===
+not stall(t)
+===InitialWorldBeliefs===
+===Observations===
+0:alarme(0),acceleration(0)
+===Runtime===
+0:pull(0)

@@ -1,0 +1,26 @@
+===Limits===
+t = 1
+===Facts===
+checkDone
+midi
+late
+ready
+===Actions===
+takeOff
+checkIn
+===PermanentRules===
+===Rules===
+===Strong===
+ready(t) ::> checkIn(t)
+checkIn(t) ::> (midi(t) ::> late(t))
+checkIn(t) ::> checkDone(t+1)
+takeOff(t)::>checkDone(t)
+===Weak===
+===Desires===
+not late(t)
+===InitialWorldBeliefs===
+not checkDone(0)
+===Observations===
+0:ready(0),midi(0)
+===Runtime===
+0:takeOff(0)

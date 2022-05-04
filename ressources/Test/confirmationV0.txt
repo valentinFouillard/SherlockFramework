@@ -1,0 +1,22 @@
+===Limits===
+t = 2
+===Facts===
+alarme 
+voyantVert 
+voyantRouge 
+panne 
+===Actions===
+===PermanentRules===
+===Rules===
+===Strong===
+voyantVert(t) ::> not panne(t)
+(not voyantRouge(t)) ::> not panne(t)
+alarme(t) ::> panne(t)
+===Weak===
+===Desires===
+not panne(t)
+===InitialWorldBeliefs===
+===Observations===
+0:voyantVert(0)
+1:not voyantRouge(1),alarme(1)
+===Runtime===
