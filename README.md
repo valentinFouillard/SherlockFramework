@@ -4,7 +4,16 @@ Sherlock is framework that allows to model erroneous decision making of a human 
 
 # Setup
 
+## Dependencies
+
 Sherlock uses the Z3 SMT solver to compute each possible belief state of the agent. Therefore before even trying to run Sherlock you must install Z3 which you can find on the [Z3 Git page](https://github.com/Z3Prover/z3). 
+
+## Build
+```
+git clone https://github.com/valentinFouillard/SherlockFramework.git
+cd SherlockFramework
+ant build
+```
 
 # Run 
 
