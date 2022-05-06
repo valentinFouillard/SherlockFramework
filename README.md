@@ -70,7 +70,7 @@ the action to turn off the light at step t causes the light to be off at next st
 the action to open a door at step t can only be performed if the door is not locked.
 
 ## Model syntax
-You can find several examples of modelisation in the directory [Test](ressources/Test/). Each file of modelisation must contains 10 sections :
+You can find several examples of modelisation in the directory [Test](ressources/Test/). Each file of modelisation must contains 9 sections :
 - **Limits** : contains the time step limit of the model.
 ```
 ===Limits===
@@ -129,4 +129,26 @@ alarm(0)
 
 # Output of the framework
 
-The output of the framework is an tree-like structure where a node ``State`` contains what the agent ignore (``MCS``) and the explanations possible (``Bias``). Each node ``State`` from a time step ``t`` contains all the next states for the step ``t+1`` and so on. Therefore a path in the tree of state represents a possible explanation of the decision making of the agent.  
+The output of the framework is an tree-like structure where a node ``State`` contains what the agent ignore (``MCS``) and the explanations possible (``Bias``) :
+
+```
+<State>
+    <MCS>  Obs_alarm_1 </MCS>
+    <Bias> Confirmation </Bias>
+    <Step time="2">
+        <State>...</State>
+        <State>...</State>
+        <State>...</State>
+    </Step>
+ </State>
+ ```
+Each node ``State`` from a time step ``t`` contains all the next states for the step ``t+1`` and so on. Therefore a path in the tree of state represents a possible explanation of the decision making of the agent
+
+## Output syntax
+Each rule of the model has the following label : `Ri_t` where i corresponds to the rank of the rule in the model and t corresponds to the step for which the rule has been ignored. For example `R2_1` corresponds to the ignorance of the rule of rank 2 at step 1.
+
+If an observation is ignore then the MCS contains a proposition of the form : `Obs_name_t` where name is the label of the proposition not observed and t the time step. 
+
+If a keep clauses is ignore then the MCS contains a proposition of the form : `keep_name_t`.
+
+Finally if a desire is ignore then the MCS contains a proposition of the form : `name_t`
