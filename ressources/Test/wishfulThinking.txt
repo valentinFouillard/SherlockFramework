@@ -8,7 +8,7 @@ takeOff
 ===PermanentRules===
 ===Rules===
 ===Strong===
-takeOff(t) => checkIn(t)
+[checkIn(t)]takeOff(t)
 takeOff(t) => (late(t) => (not late(t+1)))
 ===Weak===
 ===Desires===
