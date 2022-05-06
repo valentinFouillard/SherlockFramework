@@ -7,12 +7,12 @@ panne
 pushGreen
 pushRed
 ===PermanentRules===
-(pushRed(t) and pushGreen(t)) ::>  false
+(pushRed(t) and pushGreen(t)) =>  false
 ===Rules===
 ===Strong===
-alarm(t) ::> pushRed(t)
-alarm(t) ::> panne(t)
-(not alarm(t)) ::> (not panne(t))
+alarm(t) => pushRed(t)
+alarm(t) => panne(t)
+(not alarm(t)) => (not panne(t))
 ===Weak===
 ===Desires===
 not panne(t)
