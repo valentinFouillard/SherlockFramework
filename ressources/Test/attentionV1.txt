@@ -9,9 +9,9 @@ pull :: nat t
 ===PermanentRules===
 ===Rules===
 ===Strong===
-alarme(t) ::> stall(t)
-acceleration(t) ::> (not stall(t))
-pull(t) ::> stall(t)
+alarme(t) => stall(t)
+acceleration(t) => (not stall(t))
+pull(t) => stall(t)
 ===Weak===
 ===Desires===
 not stall(t)
