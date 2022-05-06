@@ -4,11 +4,11 @@ t = 3
 pluie 
 orage 
 ===Actions===
-eteindre :: nat t
+eteindre
 ===PermanentRules===
 ===Rules===
 ===Strong===
-eteindre(t) ::> orage(t)
+eteindre(t) => orage(t)
 ===Weak===
 ===Desires===
 ===InitialWorldBeliefs===
