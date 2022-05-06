@@ -41,7 +41,8 @@ Sherlock has 3 main parameters :
 The command line :
 
 ```
-Sherlock ressources/Test/confirmationV0.txt result.XML Confirmation Facilitation
+cd dist/
+java -jar Sherlock.jar ../ressources/Test/confirmationV0.txt result.XML Confirmation Facilitation
 ```
 
 will launch Sherlock on the model [confirmationV0](ressources/Test/confirmationV0.txt) with the explanation of the confirmation bias and the attentional facilitation and return the belief states in the result.XML file.
