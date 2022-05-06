@@ -93,7 +93,7 @@ stop
 - **PermanentRules** : contains the reasoning rules of the agent that he cannot ignore (can be empty).
 
 - **Rules** : the reasoning rules are divided into two categories :
-  - **Strong** : a list of logical formulas for which the agent believes that they always true
+  - **Strong** : a list of logical formulas for which the agent believes that they are always true
   ```
   ===Strong===
   [not danger(t)]goOn(t)
