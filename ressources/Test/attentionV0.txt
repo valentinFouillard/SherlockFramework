@@ -9,9 +9,9 @@ atterrir
 ===PermanentRules===
 ===Rules===
 ===Strong===
-(alarme(t) and (not reserve(t))) ::> panne(t)
-reserve(t) ::> (not panne(t))
-atterrir(t) ::> panne(t)
+(alarme(t) and (not reserve(t))) => panne(t)
+reserve(t) => (not panne(t))
+atterrir(t) => panne(t)
 ===Weak===
 ===Desires===
 not panne(t)
