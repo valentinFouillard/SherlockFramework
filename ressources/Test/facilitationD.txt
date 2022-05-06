@@ -17,6 +17,6 @@ land(t) ::> outFuel(t)
 not outFuel(t)
 ===InitialWorldBeliefs===
 ===Observations===
-0:alarme(0),reserve(0)
+1:alarme(1),reserve(1)
 ===Runtime===
 0:land(0)

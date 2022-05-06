@@ -6,7 +6,7 @@ acceleration
 stall 
 voyantRouge 
 ===Actions===
-pull :: nat t
+pull
 ===PermanentRules===
 ===Rules===
 ===Strong===
@@ -19,8 +19,8 @@ voyantRouge(t) => stall(t)
 not stall(t)
 ===InitialWorldBeliefs===
 ===Observations===
-0:alarme(0),acceleration(0)
-1:voyantRouge(1),acceleration(1)
+1:alarme(1),acceleration(1)
+2:voyantRouge(2),acceleration(2)
 ===Runtime===
-0:pull(0)
 1:pull(1)
+2:pull(2)

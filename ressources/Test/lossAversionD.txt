@@ -9,13 +9,13 @@ takeOff
 ===PermanentRules===
 ===Rules===
 ===Strong===
-(midi(t) and (not takeOff(t))) ::> late(t)
-takeOff(t)::>checkDone(t)
+(midi(t) and (not takeOff(t))) => late(t)
+[checkDone(t)]takeOff(t)
 ===Weak===
 ===Desires===
 not late(t)
 ===InitialWorldBeliefs===
 ===Observations===
-0:not checkDone(0),midi(0)
+1:not checkDone(1),midi(1)
 ===Runtime===
-0:takeOff(0)
+1:takeOff(1)

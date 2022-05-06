@@ -4,7 +4,7 @@ t = 3
 pluie 
 orage 
 ===Actions===
-eteindre
+eteindre 
 ===PermanentRules===
 ===Rules===
 ===Strong===
@@ -13,9 +13,9 @@ eteindre(t) => orage(t)
 ===Desires===
 ===InitialWorldBeliefs===
 ===Observations===
-0:pluie(0),orage(0)
-1:not pluie(1), not orage(1)
-2:pluie(2)
+1:pluie(1),orage(1)
+2:not pluie(2), not orage(2)
+3:pluie(3)
 ===Runtime===
-0:eteindre(0)
+1:eteindre(1)
 2:eteindre(2)

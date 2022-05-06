@@ -11,15 +11,15 @@ contourner
 ===PermanentRules===
 ===Rules===
 ===Strong===
-demiTour(t) ::> (nuages(t+1) ::> (not danger(t)))
-demiTour(t) ::> (midi(t) ::> late(t))
+demiTour(t) => (nuages(t+1) => (not danger(t)))
+demiTour(t) => (midi(t) => late(t))
 ===Weak===
-contourner(t) ::> (nuages(t+1) ::> (not danger(t)))
+contourner(t) => (nuages(t+1) => (not danger(t)))
 ===Desires===
 not late(t)
 not danger(t)
 ===InitialWorldBeliefs===
 ===Observations===
-0:nuages(1),midi(0)
+1:nuages(2),midi(1)
 ===Runtime===
-0:demiTour(0)
+1:demiTour(1)

@@ -1,5 +1,5 @@
 ===Limits===
-t = 2
+t = 1
 ===Facts===
 checkIn
 late 
@@ -8,8 +8,8 @@ takeOff
 ===PermanentRules===
 ===Rules===
 ===Strong===
-takeOff(t) ::> checkIn(t)
-takeOff(t) ::> (late(t) ::> (not late(t+1)))
+takeOff(t) => checkIn(t)
+takeOff(t) => (late(t) => (not late(t+1)))
 ===Weak===
 ===Desires===
 not late(t)

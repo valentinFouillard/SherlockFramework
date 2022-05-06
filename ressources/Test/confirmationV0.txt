@@ -17,6 +17,6 @@ alarme(t) => panne(t)
 not panne(t)
 ===InitialWorldBeliefs===
 ===Observations===
-0:voyantVert(0)
-1:not voyantRouge(1),alarme(1)
+1:voyantVert(1)
+2:not voyantRouge(2),alarme(2)
 ===Runtime===

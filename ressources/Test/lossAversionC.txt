@@ -11,16 +11,16 @@ checkIn
 ===PermanentRules===
 ===Rules===
 ===Strong===
-ready(t) ::> checkIn(t)
-checkIn(t) ::> (midi(t) ::> late(t))
-checkIn(t) ::> checkDone(t+1)
-takeOff(t)::>checkDone(t)
+ready(t) => checkIn(t)
+checkIn(t) => (midi(t) => late(t))
+checkIn(t) => checkDone(t+1)
+[checkDone(t)]takeOff(t)
 ===Weak===
 ===Desires===
 not late(t)
 ===InitialWorldBeliefs===
 not checkDone(0)
 ===Observations===
-0:ready(0),midi(0)
+1:ready(1),midi(1)
 ===Runtime===
-0:takeOff(0)
+1:takeOff(1)
