@@ -9,9 +9,9 @@ panne
 ===PermanentRules===
 ===Rules===
 ===Strong===
-voyantVert(t) ::> not panne(t)
-(not voyantRouge(t)) ::> not panne(t)
-alarme(t) ::> panne(t)
+voyantVert(t) => not panne(t)
+(not voyantRouge(t)) => not panne(t)
+alarme(t) => panne(t)
 ===Weak===
 ===Desires===
 not panne(t)

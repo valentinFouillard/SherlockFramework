@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="clean" name="Sherlock">
+    <property name="target" value="11"/>
+    <property name="source" value="11"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="dist" location="dist"/>
+    <path id="Maven Dependencies.libraryclasspath"/>
+    <path id="Sherlock.classpath">
+        <pathelement location="target/classes"/>
+        <pathelement location="lib/antlr-4.8-complete.jar"/>
+        <path refid="Maven Dependencies.libraryclasspath"/>
+    </path>
+    <path id="run.Sherlock.classpath">
+        <path refid="Sherlock.classpath"/>
+        <path refid="Maven Dependencies.libraryclasspath"/>
+        <pathelement location="lib/antlr-4.8-complete.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="target/classes"/>
+        <copy includeemptydirs="false" todir="target/classes">
+            <fileset dir="src">
+                <include name="**/*.java"/>
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.xtend"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="target/classes" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <include name="**/*.java"/>
+            <classpath refid="Sherlock.classpath"/>
+        </javac>
+    </target>
+
+     <target name="dist" depends="build-project"
+        description="generate the distribution">
+        <mkdir dir="${dist}"/>
+        <echo message="Build jarfile"/>
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar destfile="${dist}/Sherlock.jar">
+        <fileset dir="target/classes"/>
+        <zipfileset includes="**/*.class" src="lib/antlr-4.8-complete.jar"/>
+        <manifest>
+            <attribute name="Main-Class" value="sherlock.framework.Sherlock"/>
+        </manifest>
+    </jar>
+  </target>
+
+  <target name="clean"
+        description="clean up" depends="dist">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="target"/>
+  </target>
+</project>

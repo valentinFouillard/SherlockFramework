@@ -367,13 +367,13 @@ public class Diagnostic
 		//InfoNode info  = bResearch.getInfo(node, node.time);
 		String rslt = "<State>\n";
 		rslt+="<MCS> "+(node.mcs.IsEmpty()?" ":node.mcs)+" </MCS>\n";
-		rslt+="<Keep>"+(node.keep.IsEmpty()?" ":node.keep)+" </Keep>\n";
+		//rslt+="<Keep>"+(node.keep.IsEmpty()?" ":node.keep)+" </Keep>\n";
 		//rslt+=this.addInfo("Emotions", "Emotion", info.getEmotions());
 		//rslt+=this.addInfo("Families", "Family", info.getFamilyBias());
 		//rslt+=this.addInfo("Biases", "Bias", info.getBias());
 		ArrayList<String> biasList = new ArrayList<>();
 		biasList.add(node.bias);
-		rslt+=this.addInfo("Biases", "Bias",biasList);
+		rslt+=this.addInfo("Bias", "Bias",biasList);
 		if(node.hasNext()) {
 			rslt+="<Step time=\""+(node.time+1)+"\">\n";
 			for(Node next : node.next) {

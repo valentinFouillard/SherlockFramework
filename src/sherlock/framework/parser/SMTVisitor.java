@@ -248,7 +248,7 @@ public class SMTVisitor<T> implements GrammarAgentVisitor<T>{
 				currentRFactory.addSign("(or ");
 			if(expr.logicOperator().IMPLIES()!=null)
 				currentRFactory.addSign("(=> ");
-			if(expr.logicOperator().CAUSAL()!=null) {
+			if(expr.logicOperator().EFFECT()!=null) {
 				currentRFactory.addSign("(=> ");
 			}
 			causal = true;

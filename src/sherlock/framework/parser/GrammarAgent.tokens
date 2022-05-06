@@ -27,6 +27,7 @@ NUMBER=39
 OR=4
 EQUALS=6
 DEF=19
+EFFECT=7
 PRULES=24
 OBSERVATIONS=32
 TRUE=8
@@ -35,7 +36,6 @@ INITBELIEFS=33
 DFACTSSET=23
 NOT=10
 AND=3
-CAUSAL=7
 FALSE=9
 SCENARIO=37
 RULES=28
@@ -54,7 +54,6 @@ RULES=28
 '=>'=5
 'or'=4
 'Weak'=30
-'::>'=7
 ']'=17
 '==='=2
 '['=16
@@ -72,7 +71,6 @@ RULES=28
 'Desires'=31
 'Limits'=35
 '='=6
-'::'=19
 '===Agent==='=27
 'Rules'=28
 'true'=8

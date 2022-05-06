@@ -17,16 +17,16 @@ public class GrammarAgentParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__1=1, T__0=2, AND=3, OR=4, IMPLIES=5, EQUALS=6, CAUSAL=7, TRUE=8, FALSE=9, 
+		T__1=1, T__0=2, AND=3, OR=4, IMPLIES=5, EQUALS=6, EFFECT=7, TRUE=8, FALSE=9, 
 		NOT=10, COMMA=11, ADD=12, MINUS=13, LParen=14, RParent=15, LPRE=16, RPRE=17, 
 		TIME=18, DEF=19, X=20, NAT=21, FACTSSET=22, DFACTSSET=23, PRULES=24, ACTIONS=25, 
 		PACTIONSRULES=26, AGENT=27, RULES=28, STRONGRULES=29, WEAKRULES=30, DESIRES=31, 
 		OBSERVATIONS=32, INITBELIEFS=33, RUNTIME=34, LIMITS=35, WORLD=36, SCENARIO=37, 
 		ID=38, NUMBER=39, BREAKLINE=40, WS=41;
 	public static final String[] tokenNames = {
-		"<INVALID>", "':'", "'==='", "'and'", "'or'", "'=>'", "'='", "'::>'", 
+		"<INVALID>", "':'", "'==='", "'and'", "'or'", "'=>'", "'='", "EFFECT", 
 		"'true'", "'false'", "'not'", "','", "'+'", "'-'", "'('", "')'", "'['", 
-		"']'", "'t'", "'::'", "'x'", "'nat'", "'Facts'", "'Derived Facts'", "'PermanentRules'", 
+		"']'", "'t'", "DEF", "'x'", "'nat'", "'Facts'", "'Derived Facts'", "'PermanentRules'", 
 		"'Actions'", "'PermanentActionRules'", "'===Agent==='", "'Rules'", "'Strong'", 
 		"'Weak'", "'Desires'", "'Observations'", "'InitialWorldBeliefs'", "'Runtime'", 
 		"'Limits'", "'===World==='", "'===Scenario==='", "ID", "NUMBER", "BREAKLINE", 
@@ -279,9 +279,9 @@ public class GrammarAgentParser extends Parser {
 	}
 
 	public static class LogicOperatorContext extends ParserRuleContext {
-		public TerminalNode CAUSAL() { return getToken(GrammarAgentParser.CAUSAL, 0); }
 		public TerminalNode IMPLIES() { return getToken(GrammarAgentParser.IMPLIES, 0); }
 		public TerminalNode AND() { return getToken(GrammarAgentParser.AND, 0); }
+		public TerminalNode EFFECT() { return getToken(GrammarAgentParser.EFFECT, 0); }
 		public TerminalNode OR() { return getToken(GrammarAgentParser.OR, 0); }
 		public LogicOperatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -311,7 +311,7 @@ public class GrammarAgentParser extends Parser {
 			{
 			setState(84);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AND) | (1L << OR) | (1L << IMPLIES) | (1L << CAUSAL))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AND) | (1L << OR) | (1L << IMPLIES) | (1L << EFFECT))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			consume();

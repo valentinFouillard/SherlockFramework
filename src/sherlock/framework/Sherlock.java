@@ -16,32 +16,53 @@ import sherlock.framework.parser.SMTVisitor;
 
 
 
-public class Main {
+public class Sherlock {
 
+	private final static ArrayList<String> LISTBIAS = new ArrayList<>() {
+		{
+			add("Anchor");
+			add("Avoid");
+			add("Confirmation");
+			add("Control");
+			add("Correlation");
+			add("Desengagement");
+			add("Facilitation");
+			add("Loss");
+			add("Optimism");
+			add("Overconfidence");
+			add("Risk");
+			add("Truth");
+			add("Wishful");
+		}
+	};
 	public static void main(String[] args) 
 	{
-		if(args.length<2) {
-			System.out.println("Nombre d'arguments insuffisant !");
+		if(args.length<3) {
+			System.out.println("Not enough arguments !");
 		}
 		else {
 			ArrayList<String> explanations = new ArrayList<>();
 			String file = "";
+			String output = "";
 			for(int i=0;i<args.length;i++) {
 				if(i==0) {
 					file = args[i];
 				}
-				if(i>0) {
+				if(i==1) {
+					output = args[i];
+				}
+				if(i>1) {
 					explanations.add(args[i]);
 				}
 			}
-			Main.launch(file,explanations);
+			Sherlock.launch(file,output,explanations);
 
 		}
 
 	}
 
 
-	private static void launch(String file,ArrayList<String> explanations)
+	private static void launch(String file,String output,ArrayList<String> explanations)
 
 	{
 		// Create an input character stream from standard in
@@ -62,18 +83,36 @@ public class Main {
 			plParser.parse().accept(smtVisit);
 			SMTBuild build = new SMTBuild(smtVisit);
 			// System.out.println(build.generateModel());
-			SMT smt = new SMT("input.txt","output.txt",build.getModel());
+			SMT smt = new SMT("inputZ3.txt","outputZ3.txt",build.getModel());
 			//System.out.println(build.getScenario().getPropositionSet(0).set);
 			//build.getScenario().timeLimit = 2;
-			Diagnostic diag = new Diagnostic(build,smt,Main.createInstanceBias(explanations, build, smt));
+			ArrayList<CoExp> bias = new ArrayList<>();
+			for(String exp : explanations) {
+				if(exp.equals("All")) {
+					for(String b : LISTBIAS) {
+						Sherlock.addBias(bias,Sherlock.createInstanceBias(b, build, smt));
+					}
+				}
+				else {
+					Sherlock.addBias(bias,Sherlock.createInstanceBias(exp, build, smt));
+				}
+			}
+			Diagnostic diag = new Diagnostic(build,smt,bias);
 			diag.launchDiag();
-			diag.getOutputXML("outputXML.xml");
+			diag.getOutputXML(output);
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
+	}
+	
+	private static void addBias(ArrayList<CoExp> exp,CoExp bias)
+	{
+		if(!exp.contains(bias)) {
+			exp.add(bias);
+		}
 	}
 
 	public static void serializeDataOut(ArrayList<ArrayList<PropositionSet>> ish)throws IOException{
@@ -102,55 +141,41 @@ public class Main {
 
 	}
 
-	private static ArrayList<CoExp> createInstanceBias(ArrayList<String> exp,SMTBuild build,SMT smt)
+	private static CoExp createInstanceBias(String exp,SMTBuild build,SMT smt)
 	{
-		ArrayList<CoExp> bias = new ArrayList<>();
-		for(String e : exp) {
-			switch(e) 
+		
+			switch(exp) 
 			{
 			case "Anchor" :
-				bias.add(new AnchorBias(build,smt));
-				break;
+				return new AnchorBias(build,smt);
 			case "Avoid" :
-				bias.add(new AvoidBias(build,smt));
-				break;
+				return new AvoidBias(build,smt);
 			case "Confirmation" :
-				bias.add(new ConfirmationBias(build,smt));
-				break;
+				return new ConfirmationBias(build,smt);
 			case "Control" :
-				bias.add(new ControlIllusion(build,smt));
-				break;
+				return new ControlIllusion(build,smt);
 			case "Correlation" :
-				bias.add(new CorrelationIllusion(build,smt));
-				break;
+				return new CorrelationIllusion(build,smt);
 			case "Desengagement" :
-				bias.add(new DesengagementBias(build,smt));
-				break;
+				return new DesengagementBias(build,smt);
 			case "Facilitation" :
-				bias.add(new FacilitationBias(build,smt));
-				break;
+				return new FacilitationBias(build,smt);
 			case "Loss" :
-				bias.add(new LossAversion(build,smt));
-				break;
-			case "Optimisme" :
-				bias.add(new OptimismeBias(build,smt));
-				break;
+				return new LossAversion(build,smt);
+			case "Optimism" :
+				return new OptimismeBias(build,smt);
 			case "Overconfidence" :
-				bias.add(new Overconfidence(build,smt));
-				break;
+				return new Overconfidence(build,smt);
 			case "Risk" :
-				bias.add(new RiskAversion(build,smt));
-				break;
+				return new RiskAversion(build,smt);
 			case "Truth" :
-				bias.add(new TruthIllusion(build,smt));
-				break;
+				return new TruthIllusion(build,smt);
 			case "Wishful" :
-				bias.add(new WishfulThinking(build,smt));
-				break;
+				return new WishfulThinking(build,smt);
+			default :
+				return null;
 			}
-		}
 
-		return bias;
 	}
 
 

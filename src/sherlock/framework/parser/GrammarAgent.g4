@@ -19,7 +19,7 @@ logicOperator
 	: AND
 	| OR
 	| IMPLIES
-	| CAUSAL
+	| EFFECT
 	;
 	
 // Boolean
@@ -115,7 +115,7 @@ AND 			: 'and';
 OR  			: 'or';
 IMPLIES 		: '=>';
 EQUALS			: '=';
-CAUSAL			: '::>';
+EFFECT			: '::';
 TRUE 			: 'true';
 FALSE 			: 'false';
 NOT 			: 'not';
