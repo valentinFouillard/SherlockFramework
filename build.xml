@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="clean" name="Sherlock">
+<project basedir="." default="build" name="Sherlock">
     <property name="target" value="11"/>
     <property name="source" value="11"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -49,7 +49,7 @@
     </jar>
   </target>
 
-  <target name="clean"
+  <target name="build"
         description="clean up" depends="dist">
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="target"/>
