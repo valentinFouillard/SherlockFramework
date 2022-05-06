@@ -1,6 +1,6 @@
 # SherlockFramework
 
-Sherlock is framework that allows to model erroneous decision making of a human agent and to compute the possible beliefs states that could explain his decisions. Moreover this framework offers a range of cognitive explanations based on the  cognitive bias litterature to provide insight into the plausibility belief state.
+Sherlock is framework that allows to model erroneous decision making of a human agent and to compute the possible beliefs states that could explain his decisions. Moreover this framework offers a range of cognitive explanations based on the  cognitive bias litterature to provide insight for the plausibility of belief states.
 
 # Setup
 
