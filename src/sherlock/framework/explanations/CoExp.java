@@ -1,6 +1,4 @@
 package sherlock.framework.explanations;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import sherlock.framework.Node;
 import sherlock.framework.Proposition;

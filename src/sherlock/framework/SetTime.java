@@ -1,6 +1,6 @@
 package sherlock.framework;
 /**
- * Ensemble d'ensemble de proposition dans le temps
+ * Set of proposition set in time
  * @author valentin
  *
  */
@@ -24,6 +24,11 @@ public class SetTime
 		return this.set;
 	}
 	
+	/**
+	 * Get the proposition for the time step
+	 * @param time
+	 * @return
+	 */
 	public PropositionSet getPropositionSet(int time)
 	{
 		if(time>this.set.length) {
@@ -43,7 +48,7 @@ public class SetTime
 	}
 	
 	/**
-	 * Union des observations jusqu'à un moment t
+	 * Union of the proposition set from 0 to time step
 	 * @param time
 	 * @return
 	 */
@@ -58,6 +63,11 @@ public class SetTime
 		return result;
 	}
 	
+	/**
+	 * Return true if the set contains a proposition with the id
+	 * @param idPredicat
+	 * @return
+	 */
 	public Proposition contains(String idPredicat) {
 		for(int i =0;i<this.timeLimit;i++) {
 			if(this.set[i].contains(idPredicat)) {

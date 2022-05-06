@@ -1,15 +1,11 @@
 package sherlock.framework;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * Classe représentant un ensemble de proposition
- * @author valentin
+ * Set of logic proposition
  *
  */
-public class PropositionSet implements Serializable
+public class PropositionSet
 {
 	public ArrayList<Proposition> set;
 	
@@ -39,11 +35,22 @@ public class PropositionSet implements Serializable
 		return this.set.contains(p);
 	}
 	
+	/**
+	 * Return true if the current set is a subset of p
+	 * @param p
+	 * @return
+	 */
 	public boolean contains(PropositionSet p)
 	{
 		return this.set.containsAll(p.set);
 	}
 	
+	
+	/**
+	 * Return all the proposition that are in the list and the current set
+	 * @param list
+	 * @return
+	 */
 	public ArrayList<PropositionSet> allContains(ArrayList<PropositionSet> list)
 	{
 		ArrayList<PropositionSet> result = new ArrayList<>();
@@ -55,6 +62,11 @@ public class PropositionSet implements Serializable
 		return result;
 	}
 	
+	/**
+	 * Return true if a proposition has the id
+	 * @param id
+	 * @return
+	 */
 	public boolean contains(String id)
 	{
 		for(Proposition p : this.set){
@@ -64,6 +76,12 @@ public class PropositionSet implements Serializable
 		return false;
 	}
 	
+	/**
+	 * Return true if a proposition has the id and that proposition have the same truth value
+	 * @param id
+	 * @param instance
+	 * @return
+	 */
 	public boolean containsId(String id,boolean instance) 
 	{
 		for(Proposition p : this.set) {
@@ -114,7 +132,7 @@ public class PropositionSet implements Serializable
 	
 	
 	/**
-	 * Retourne une proposition par son identifiant
+	 * Return the proposition with the id
 	 * @param id
 	 * @return
 	 */
@@ -132,10 +150,10 @@ public class PropositionSet implements Serializable
 			this.set.add(p);
 	}
 	/**
-	 * Union des deux ensembles de proposition
+	 * Union of two set
 	 * @param pS
 	 * @param ps2
-	 * @return
+	 * @return new set
 	 */
 	public static PropositionSet union(PropositionSet pS, PropositionSet ps2)
 	{
@@ -149,10 +167,10 @@ public class PropositionSet implements Serializable
 		return result;
 	}
 	/**
-	 * Intersection des deux ensembles de proposition
+	 * Intersection of two set
 	 * @param pS
 	 * @param ps2
-	 * @return
+	 * @return new set
 	 */
 	public static PropositionSet intersec(PropositionSet pS,PropositionSet ps2)
 	{
@@ -187,9 +205,9 @@ public class PropositionSet implements Serializable
 	
 	
 	/**
-	 * Retire une ensemble de proposition d'un autre ensemble
+	 * Remove ps2 from ps
 	 * @param pS
-	 * @param ps2 l'ensemble retiré
+	 * @param ps2 the set removed from pS
 	 */
 	public static void retrievePropositionSet(PropositionSet pS, PropositionSet ps2)
 	{	
@@ -200,6 +218,12 @@ public class PropositionSet implements Serializable
 		}
 	}
 	
+	
+	/**
+	 * Remove not ps2 from pS
+	 * @param pS
+	 * @param ps2 the not set removed
+	 */
 	public static void retrievePropositionSetInverse(PropositionSet pS, PropositionSet ps2)
 	{	
 		for(Proposition inst : ps2.set) {
@@ -254,13 +278,6 @@ public class PropositionSet implements Serializable
 		}
 		return true;
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

@@ -1,10 +1,5 @@
 package sherlock.framework;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import org.antlr.v4.runtime.*;
@@ -14,10 +9,14 @@ import sherlock.framework.parser.GrammarAgentLexer;
 import sherlock.framework.parser.GrammarAgentParser;
 import sherlock.framework.parser.SMTVisitor;
 
-
-
+/**
+ * Main class
+ *
+ */
+@SuppressWarnings("serial")
 public class Sherlock {
 
+	// All the explanations
 	private final static ArrayList<String> LISTBIAS = new ArrayList<>() {
 		{
 			add("Anchor");
@@ -35,6 +34,7 @@ public class Sherlock {
 			add("Wishful");
 		}
 	};
+	
 	public static void main(String[] args) 
 	{
 		if(args.length<3) {
@@ -115,31 +115,7 @@ public class Sherlock {
 		}
 	}
 
-	public static void serializeDataOut(ArrayList<ArrayList<PropositionSet>> ish)throws IOException{
-		String fileName= "Test.txt";
-		FileOutputStream fos = new FileOutputStream(fileName);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(ish);
-		oos.close();
-	}
-
-	public static ArrayList<ArrayList<PropositionSet>> serializeDataIn()
-	{
-		String fileName= "Test.txt";
-		FileInputStream fin;
-		try {
-			fin = new FileInputStream(fileName);
-			ObjectInputStream ois = new ObjectInputStream(fin);
-			ArrayList<ArrayList<PropositionSet>> iHandler= (ArrayList<ArrayList<PropositionSet>>) ois.readObject();
-			ois.close();
-			return iHandler;
-		} catch (IOException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-
-	}
+	
 
 	private static CoExp createInstanceBias(String exp,SMTBuild build,SMT smt)
 	{

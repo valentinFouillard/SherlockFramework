@@ -6,8 +6,8 @@ import sherlock.framework.explanations.*;
 import sherlock.framework.parser.SMTVisitor;
 
 /**
- * Classe créant un arbre de scénario possible
- * @author valentin
+ * 
+ * Class that build the scenario tree and search possible explanation
  *
  */
 public class Diagnostic 
@@ -19,6 +19,12 @@ public class Diagnostic
 	public Node racine;
 	private ArrayList<CoExp> explanations;
 
+	/**
+	 * Constructor
+	 * @param build model builder
+	 * @param smt the smt solver
+	 * @param explanations a list of possible explanations
+	 */
 	public Diagnostic(SMTBuild build,SMT smt,ArrayList<CoExp> explanations)
 	{
 
@@ -36,21 +42,20 @@ public class Diagnostic
 		this.belief = PropositionSet.union(belief, rules);
 		this.belief = PropositionSet.union(belief, desires);
 		this.explanations = explanations;
-		//this.explanations.add(new Coherence(build,yices));
+		
 	}
 
 	/**
-	 * Lance le diagnostic
+	 * Launch the diagnostic
 	 */
 	public void launchDiag()
 	{
-		this.tradObservation();
-		//this.getMces(racine,0);
-		this.computeProbableScenarios();
+		this.tradObservation();// add libelle on the observations
+		this.computeProbableScenarios(); // compute the scenario tree
 	}
 
 	/**
-	 * Ajoute un libelle Obs au prédicat d'observation
+	 * Add libelle on the observations
 	 */
 	private void tradObservation()
 	{
@@ -69,7 +74,12 @@ public class Diagnostic
 
 
 
-
+	/**
+	 * Return and add the node for the mcs to the node following the node before
+	 * @param before parent of the current node
+	 * @param mcs 
+	 * @return node next to before
+	 */
 	private Node addNext(Node before,ArrayList<PropositionSet> mcs) 
 	{
 		Node node = new Node(mcs,before,(before.time+1));
@@ -78,46 +88,50 @@ public class Diagnostic
 		return node;
 	}
 
+	/**
+	 * Compute the next MCSes after the node before
+	 * @param before the node before the current step
+	 * @return next MCSes
+	 */
 	private ArrayList<ArrayList<PropositionSet>> nextMCS(Node before)
 	{
-		PropositionSet newBelief = new PropositionSet();
+		PropositionSet newBelief = new PropositionSet(); // newBelief will contain the state of the node before with the observation and action of the next step
 		PropositionSet keepClause = new PropositionSet();
 		PropositionSet blockedRules = new PropositionSet();
 
-		newBelief = new PropositionSet(this.belief);
-
-		//this.removeAllRule(newBelief, before); // Supprime les règles des  anciens MCS
-
-		int time = before.time+1;
+		newBelief = new PropositionSet(this.belief); 
+		
+		int time = before.time+1; // Current step is the time after before
 
 		if(time>0) {
-			keepClause = this.allKeep(time, before); // Retourne les clauses keep du pas de temps t
-			//newBelief = PropositionSet.union(keepClause, newBelief);
-
+			keepClause = this.allKeep(time, before); // return the keep clause of the time step
 		}
 		else {
-			this.addknowInit(); // Ajoute les prédicats Known d'initialisation
+			this.addknowInit(); // At step 0, the agent know the initial belief
 
 		}
 
-		newBelief = this.constructBelief(newBelief, obss, before,time,blockedRules);
+		newBelief = this.constructBelief(newBelief, obss, before,time,blockedRules); // Add all the observations and actions from step 0 to the node before and remove the MCS at each step
 
-		PropositionSet actions = scenario.getPropositionSetUnion(time-1); // Toutes les actions depuis le début
+		PropositionSet actions = scenario.getPropositionSetUnion(time-1); // All the actions from the start
 
 		PropositionSet blocked = PropositionSet.union(before.getKeepClauseFromNode(),
-				PropositionSet.union(PropositionSet.union(actions, blockedRules),this.coherence)); // Union de tous les ensembles bloqués à vrai
+				PropositionSet.union(PropositionSet.union(actions, blockedRules),this.coherence)); // The coherence set, the actions and the keep clause before the current step are blocked
 
 
 
-		ArrayList<ArrayList<PropositionSet>> mces = smt.getRationnalMCS(scenario.getPropositionSet(time),newBelief,obss.getPropositionSet(time),blocked,keepClause,time);
+		ArrayList<ArrayList<PropositionSet>> mces = smt.getRationnalMCS(scenario.getPropositionSet(time),newBelief,obss.getPropositionSet(time),blocked,keepClause,time); // Compute all MCSes
 
 		return mces;
 	}
 
+	/**
+	 * Compute all the scenarios
+	 */
 	public void computeProbableScenarios()
 	{
 		int threshold = 0;
-		ArrayList<Node> noExplore = new ArrayList<>();
+		//ArrayList<Node> noExplore = new ArrayList<>();
 		ArrayList<Node> racineList = new ArrayList<>();
 		racineList.add(racine);
 		//threshold =this.computeThreshold(racineList, threshold, noExplore);
@@ -130,6 +144,8 @@ public class Diagnostic
 		}
 	}
 
+
+	@SuppressWarnings("unused")
 	private int computeThreshold(ArrayList<Node> nodes,int threshold,ArrayList<Node> noExplore)
 	{
 
@@ -179,6 +195,12 @@ public class Diagnostic
 
 	}
 
+	/**
+	 * Compute the next nodes from the current node
+	 * @param node
+	 * @param nbrExp number of explanations
+	 * @param threshold of explanations
+	 */
 	private void explore(Node node,int nbrExp,int threshold)
 	{
 		for(ArrayList<PropositionSet> nextMcs : this.nextMCS(node)) {
@@ -205,13 +227,19 @@ public class Diagnostic
 	}
 
 
+	/**
+	 * Return all keep clauses from the node before to the time step time
+	 * @param time
+	 * @param before
+	 * @return
+	 */
 	private PropositionSet allKeep(int time, Node before)
 	{
 		return build.allKeep(time, before);
 	}
 
 	/**
-	 * Retire les clauses keep ignorées
+	 * Remove the keep clause that are used to update the inertia 
 	 * @param keepClause
 	 * @param mcs
 	 * @return
@@ -231,11 +259,11 @@ public class Diagnostic
 	
 
 	/**
-	 * Construit les croyances à un instant t en fonction du MCS
-	 * @param belief
-	 * @param obss
-	 * @param before
-	 * @return
+	 * Build the belief state of the next step after the node before
+	 * @param belief the initial belief
+	 * @param obss the observation of the current step
+	 * @param before the node before the step
+	 * @return belief state
 	 */
 	private PropositionSet constructBelief(PropositionSet belief,SetTime obss,Node before,int time,PropositionSet blockedRules)
 	{
@@ -246,12 +274,7 @@ public class Diagnostic
 
 		PropositionSet newBelief = new PropositionSet(belief);
 		newBelief = PropositionSet.union(keep, newBelief);
-		//PropositionSet newBeliefClone = new PropositionSet(newBelief);
-		for(Proposition p : newBelief.set) {
-			if(p.maxTime<time  && p.id.charAt(0)=='B') { //Toutes les règles de raisonnement ancienne 
-				blockedRules.addProposition(p);		    //sont bloqué
-			}
-		}
+		
 
 		for(int i =0;i<mcses.size();i++) {
 			PropositionSet mcs = mcses.get(i);
@@ -263,11 +286,8 @@ public class Diagnostic
 		return newBelief;
 	}
 
-	/**
-	 * Supprime les règles des croyances présent dans les anciens MCS
-	 * @param newbelief
-	 * @param before
-	 */
+	
+	@SuppressWarnings("unused")
 	private void removeAllRule(PropositionSet newbelief,Node before)
 	{
 		ArrayList<PropositionSet> mcses = before.getMCSFromNode();
@@ -285,7 +305,7 @@ public class Diagnostic
 
 
 	/**
-	 * Ajoute les clauses known initiales
+	 * Add inital known predicate
 	 */
 	private void addknowInit()
 	{
@@ -298,7 +318,10 @@ public class Diagnostic
 		}
 	}
 	
-	
+	/**
+	 * Build output file
+	 * @param fileOutput
+	 */
 	public void getOutputXML(String fileOutput) 
 	{
 		
@@ -318,7 +341,11 @@ public class Diagnostic
 		}
 	} 
 
-
+	
+	/**
+	 * Output the model used in Sherlock
+	 * @return
+	 */
 	private String outputModel()
 	{
 		String rslt = "<Rules>\n";
@@ -361,6 +388,12 @@ public class Diagnostic
 
 
 	}
+	
+	/**
+	 * Return XML output for the node
+	 * @param node
+	 * @return
+	 */
 	private String outputNode(Node node)
 	{
 

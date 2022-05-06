@@ -1,25 +1,18 @@
 package sherlock.framework;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import sherlock.framework.parser.Factory;
 import sherlock.framework.parser.FactoryBuild;
-import sherlock.framework.parser.PropositionFactory;
+
 import sherlock.framework.parser.SMTVisitor;
 
 /**
- * SMTBuild se charge de la génération de la déinfition des règles et des propositions
- * au format SMT
- * @author valentin
+ * SMTBuild generate the java object for the logic proposition of the model and the SMT definitions
  *
  */
 public class SMTBuild 
 {
 	private SMTVisitor<Object> smtVisitor;
-	private PropositionSet rulesCoherent;
-	private PropositionSet rules;
 	private String model;
 	private PropositionSet facts;
 	private SetTime scenario;
@@ -30,8 +23,6 @@ public class SMTBuild
 	{
 		this.smtVisitor = smtVisitor;
 		this.factBuild = new FactoryBuild();
-		this.rulesCoherent = new PropositionSet();
-		this.rules = new PropositionSet();
 		this.facts = new PropositionSet();
 		this.model=this.generateModel();
 		this.scenario = null;
@@ -51,6 +42,10 @@ public class SMTBuild
 		}
 		return this.scenario;
 	}
+	
+	/**
+	 * Generate the definition of each action
+	 */
 	public void generateScenario()
 	{
 		this.scenario = new SetTime(this.smtVisitor.scenario.timeLimit);
@@ -62,7 +57,7 @@ public class SMTBuild
 				for(Proposition p : pSet.set) {
 					if(!p.id.contains("known")) {
 						temp.addProposition(p);
-						temp.addProposition(new Proposition("known_"+p.id,true));
+						temp.addProposition(new Proposition("known_"+p.id,true)); // each action of the scenario is known and true
 						actions.add(p.id.split("_")[0]);
 					}
 					
@@ -74,7 +69,7 @@ public class SMTBuild
 					if(!actions.contains(act)) {
 						String name = act + "_"+time;
 						temp.addProposition(new Proposition(name,false));
-						temp.addProposition(new Proposition("known_"+name,true));
+						temp.addProposition(new Proposition("known_"+name,true)); // the other are known but false
 					}
 				}
 				
@@ -97,13 +92,17 @@ public class SMTBuild
 		return this.smtVisitor.desires;
 	}
 	
+	/**
+	 * Generate all the desires of the scenario
+	 * @return
+	 */
 	public PropositionSet generateDesires()
 	{
 		PropositionSet allDesires = new PropositionSet();
 		
 		for(Proposition d : this.getDesires()) {
 			for(int i=0;i<this.getScenario().timeLimit+1;i++) {
-				allDesires.addProposition(new Proposition(d.id+"_"+i,d.instance));
+				allDesires.addProposition(new Proposition(d.id+"_"+i,d.instance)); // Each desire is true at each time step
 			}
 		}
 		return allDesires;
@@ -134,7 +133,10 @@ public class SMTBuild
 	}
 	
 	
-	
+	/**
+	 * Generate the definition of the rules and proposition for the SMT solver
+	 * @return
+	 */
 	private String generateModel()
 	{
 		for(Factory f : this.smtVisitor.getFactories()) {
@@ -149,111 +151,11 @@ public class SMTBuild
 		
 	}
 	
-	/*private String generateAllValueFactory(PropositionFactory factory,HashMap<String,Integer> limit)
-	{
-		String result ="";
-		ArrayList<String> args = new ArrayList<>(factory.getPreds().get(0).idArgs.keySet());
-		String model = this.stepGenerate(factory, new HashMap<String,Integer>(), args, 0, limit, result);
-		return model;
-	}*/
+
 	
-	/*private String stepGenerate(PropositionFactory factory,HashMap<String,Integer> value,ArrayList<String> args,int index,HashMap<String,Integer> limit,String result)
-	{
-		String arg = args.get(index);
-		int minLimit = 0;
-		int maxLimit = limit.get(arg);
-		if(!factory.isRule()) {
-			minLimit = factory.getMinLimit().get(arg);
-			maxLimit = factory.getMaxLimit().get(arg) + maxLimit;
-		}
-		
-		for(int i=minLimit;i<maxLimit;i++) {
-			value.put(arg, i);
-			if(index+1 == args.size()) {
-				String tempResult = factory.createInstance(value);
-				 String namePred = factory.getPreds().get(0).getPredToSMT(value, false);
-				 
-				 if(factory.getCoherence()) {
-					 this.rulesCoherent.addProposition(new Proposition(namePred,true));
-				 }
-				 if(factory.isRule()) {
-					 Proposition r = new Proposition(namePred,true,factory.getMaxTime(value.get("t")));
-					 r.setPremisse(this.getPremisse(tempResult));
-					 if(factory.isStrong()) {
-						r.isRuleStrong = true;
-					}
-					else {
-						r.isRuleWeak = true;
-					}
-					 if(factory.precondition!=null) {
-						 ArrayList<String> prec = new ArrayList<>();
-						 final String regex = "known_[^\\s\\)]*";
-						 final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
-						 final Matcher matcher = pattern.matcher(tempResult);
-						 while(matcher.find()) {
-							 prec.add(matcher.group(0));
-						 }
-						 
-					     r.precArg = prec;   
-					 }
-			
-					 this.rules.addProposition(r);
-					 
-				 }
-				 else {
-					 if(!factory.isCoherence) {
-						     this.facts.addProposition(new Proposition(namePred,true));
-						 	 tempResult = this.addKnown(namePred)+ tempResult;
-							 tempResult += this.addMetaRule(namePred,minLimit);
-					 }
-				 }
-				 
-				result+=tempResult; 
-			}
-			else {
-				 result+=this.stepGenerate(factory, value, args, index+1, limit,"");
-			}
-		}
-		return result;
-	}*/
 	
-	private String addKnown(String idPredicat) {
-		return "(declare-const known_"+idPredicat+" Bool)\n";
-	}
-	private String addMetaRule(String idPredicat,int minlimit) {
-		String result="";
-		String timeS = idPredicat.split("_")[1];
-		int timePred = 0;
-		if(timeS.contains("m")) {
-			timePred = -Integer.parseInt(timeS.substring(1));
-		}
-		else{
-			timePred= Integer.parseInt(timeS);
-		}
-		if(timePred > minlimit && !timeS.contains("m")) {
-			result+="(declare-const keep_"+idPredicat+" Bool)\n";
-			result+="(declare-const keepKnown_"+idPredicat+" Bool)\n";
-			String newname = timePred<0?this.changeValueTime(idPredicat, timePred+1):this.changeValueTime(idPredicat, timePred-1);
-			result+="(assert (= keep_"+idPredicat+" (= "+newname+" "+idPredicat+")))\n";
-			
-			result+="(assert (= keepKnown_"+idPredicat+" (= known_"+newname+" known_"+idPredicat+" )))\n";
-		}
-		
-		Proposition p = this.smtVisitor.observations.contains(idPredicat);
-		if(p!=null) {
-			//if(p.instance) {
-				result += "(declare-const Obs_"+idPredicat+" Bool)\n";
-				result+= "(assert (=> Obs_"+idPredicat+" (and "+idPredicat+" known_"+idPredicat+") ))\n";
-			//}
-			//else {
-				result += "(declare-const ObsNot_"+idPredicat+" Bool)\n";
-				result+= "(assert (=> ObsNot_"+idPredicat+" (and (not "+idPredicat+") known_"+idPredicat+") ))\n";
-			//}
-		}
-		return result;
-	}
 	/**
-	 * Retourne toute les clauses keep d'un temps t
+	 * Return all the keep clause for the time step
 	 * @param time
 	 * @param before
 	 * @return
@@ -317,98 +219,7 @@ public class SMTBuild
 		return keepProp;
 	}
 	
-	/**
-	 * Retourne les clauses keep value
-	 * @param time
-	 * @param before
-	 * @return
-	 */
-	/*private PropositionSet getKeep(int time,Node before)
-	{
-		PropositionSet keepProp = new PropositionSet();
-		for(Proposition p : this.getObservations().getPropositionSetUnion(time-1).set) {
-			if(!before.mcs.contains(p)) {
-				int timeP= 0;
-				if(p.id.split("_")[2].contains("m")) {
-					timeP = -Integer.parseInt(p.id.split("_")[2].substring(1));
-				}
-				else{
-					timeP = Integer.parseInt(p.id.split("_")[2]);
-				}
-				String id = p.id.split("_")[1] +"_"+ p.id.split("_")[2];
-				if(timeP<time) {
-					String newId= "keep_"+this.changeValueTime(id, time);
-					keepProp.addProposition(new Proposition(newId,true));
-				}
-			}
-		}
-		
-		for(Proposition p : this.getBeliefs().set) {
-			if(p.id.charAt(0) != SMTVisitor.RULEID) {
-				int timeP= 0;
-				if(p.id.split("_")[1].contains("m")) {
-					timeP = -Integer.parseInt(p.id.split("_")[1].substring(1));
-				}
-				else{
-					timeP = Integer.parseInt(p.id.split("_")[1]);
-				}
-				if(timeP<time) {
-					String newId= "keep_"+this.changeValueTime(p.id,time);
-					keepProp.addProposition(new Proposition(newId,true));
-				}
-			}
-		}
-		
-		return keepProp;
-			
-	}*/
 	
-	/**
-	 * Retourne les clauses keep known
-	 * @param time
-	 * @param before
-	 * @return
-	 */
-	/*private PropositionSet getKeepKnown(int time,Node before)
-	{
-		PropositionSet keepProp = new PropositionSet();
-		for(Proposition p : this.getObservations().getPropositionSetUnion(time-1).set) {
-			if(!before.mcs.contains(p)) {
-				int timeP= 0;
-				if(p.id.split("_")[2].contains("m")) {
-					timeP = -Integer.parseInt(p.id.split("_")[2].substring(1));
-				}
-				else{
-					timeP = Integer.parseInt(p.id.split("_")[2]);
-				}
-				
-				String id = p.id.split("_")[1] +"_"+ p.id.split("_")[2];
-				if(timeP<time) {
-					String newId= "keepKnown_"+this.changeValueTime(id,time);
-					keepProp.addProposition(new Proposition(newId,true));
-				}
-			}
-		}
-		
-		for(Proposition p : this.getBeliefs().set) {
-			if(p.id.charAt(0) != SMTVisitor.RULEID) {
-				int timeP= 0;
-				if(p.id.split("_")[1].contains("m")) {
-					timeP = -Integer.parseInt(p.id.split("_")[1].substring(1));
-				}
-				else{
-					timeP = Integer.parseInt(p.id.split("_")[1]);
-				}
-				if(timeP<time) {
-					String newId= "keepKnown_"+this.changeValueTime(p.id,time);
-					keepProp.addProposition(new Proposition(newId,true));
-				}
-			}
-		}
-		
-		return keepProp;
-			
-	}*/
 	private String changeValueTime(String predicat,int time) {
 		
 		String[] pred = predicat.split("_");
@@ -432,6 +243,7 @@ public class SMTBuild
 		return result;
 	}
 	
+	/*@SuppressWarnings("unused")
 	private String getPremisse(String def) {
 		
 		
@@ -458,5 +270,5 @@ public class SMTBuild
 			i++;
 		}
 		return defTemp.substring(3, i);
-	}
+	}*/
 }

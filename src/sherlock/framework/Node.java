@@ -2,19 +2,18 @@ package sherlock.framework;
 import java.util.ArrayList;
 
 /**
- * Noeud de l'arbre
- * @author valentin
+ * Node of the scenario tree
  *
  */
 public class Node 
 {
 	
-	public PropositionSet mcs;
-	public ArrayList<Node> next;
-	public Node parent;
+	public PropositionSet mcs; // All the proposition that need to be removed
+	public ArrayList<Node> next; // The next nodes
+	public Node parent; // The node before
 	public int time;
-	public PropositionSet keep;
-	public ArrayList<PropositionSet> mcsSepare;
+	public PropositionSet keep; // the keep updated 
+	public ArrayList<PropositionSet> mcsSepare; // each proposition set removed at each step of the algorithm
 	public String bias = "";
 	private ArrayList<String> expl;
 	
@@ -91,19 +90,13 @@ public class Node
 		return this.next;
 	}
 	
-	/**
-	 * Ajoute un fils
-	 * @param next
-	 */
+	
 	public void addNext(Node next)
 	{
 		this.next.add(next);
 	}
 	
-	/**
-	 * Retourne vrai si le noeud à des fils
-	 * @return
-	 */
+	
 	public boolean hasNext()
 	{
 		return !this.next.isEmpty();
@@ -115,7 +108,7 @@ public class Node
 	}
 	
 	/**
-	 * Fait l'union de tous les MCS à partir de ce noeud en remontant à la racine
+	 * Return the union of the MCS from the racine to the current node
 	 * @return
 	 */
 	public PropositionSet mcsUnion()
@@ -128,7 +121,7 @@ public class Node
 	}
 	
 	/**
-	 * Retourne tous les MCS à partir de ce noeud en remontant à la racine
+	 * Return a list of the MCS from the racine to the current node
 	 * @return
 	 */
 	public ArrayList<PropositionSet> getMCSFromNode()
@@ -138,6 +131,10 @@ public class Node
 		return result;
 	}
 	
+	/**
+	 * Return all the keep clause from the racine to the current node
+	 * @return
+	 */
 	public PropositionSet getKeepClauseFromNode()
 	{
 		PropositionSet result = new PropositionSet();
@@ -145,6 +142,10 @@ public class Node
 		return result;
 	}
 	
+	/**
+	 * Add the current keep to the previous keep
+	 * @param result
+	 */
 	private void getPrevKeep(PropositionSet result) {
 		if(this.parent!=null) {
 			this.parent.getPrevKeep(result);
@@ -154,6 +155,10 @@ public class Node
 		}
 	}
 	
+	/**
+	 * Add the current MCS to the previous MCSes
+	 * @param result
+	 */
 	private void getPrevMCs(ArrayList<PropositionSet> result)
 	{
 		if(this.parent!=null) {
@@ -162,6 +167,10 @@ public class Node
 		}
 	}
 	
+	/**
+	 * Return the neighbors of the current node
+	 * @return
+	 */
 	public ArrayList<PropositionSet> getChoices()
 	{
 		ArrayList<PropositionSet> choices = new ArrayList<>();
@@ -176,6 +185,7 @@ public class Node
 			return choices;
 		}
 	}
+	
 	
 	public ArrayList<String> getExplanations()
 	{

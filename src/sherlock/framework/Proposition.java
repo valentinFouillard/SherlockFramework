@@ -1,8 +1,11 @@
 package sherlock.framework;
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Proposition implements Serializable
+/**
+ * Logic proposition
+ *
+ */
+public class Proposition 
 {
 	public String id;
 	public boolean instance,isRuleStrong,isRuleWeak;

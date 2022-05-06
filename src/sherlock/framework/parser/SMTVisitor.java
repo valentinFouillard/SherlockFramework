@@ -2,7 +2,6 @@ package sherlock.framework.parser;
 // Generated from GrammarAgent.g4 by ANTLR 4.8
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -28,7 +27,6 @@ public class SMTVisitor<T> implements GrammarAgentVisitor<T>{
 	
 	private HashMap<String,Factory> allProp;
 	private RulesFactory currentRFactory;
-	private ArrayList<String> maxargs;
 	public PropositionSet beliefs;
 	public PropositionSet coherence;
 	public PropositionSet rules;
@@ -44,7 +42,6 @@ public class SMTVisitor<T> implements GrammarAgentVisitor<T>{
 		super();
 		//this.allProposition = new LinkedHashMap<>();
 		this.allProp = new HashMap<>();
-		this.maxargs = new ArrayList<>();
 		this.beliefs = new PropositionSet();
 		this.actions = new ArrayList<>();
 		this.limitArgs = 0;
@@ -300,10 +297,7 @@ public class SMTVisitor<T> implements GrammarAgentVisitor<T>{
 	}
 	
 
-	private boolean isAction(String action)
-	{
-		return this.actions.contains(action);
-	}
+	
 	
 
 	@Override
@@ -403,7 +397,7 @@ public class SMTVisitor<T> implements GrammarAgentVisitor<T>{
 	@Override
 	public T visitDefLimits(GrammarAgentParser.DefLimitsContext ctx) {
 		// TODO Auto-generated method stub
-		this.limitArgs = Integer.parseInt(ctx.NUMBER().getText());
+		this.limitArgs = Integer.parseInt(ctx.NUMBER().getText())+1;
 		return null;
 	}
 	
